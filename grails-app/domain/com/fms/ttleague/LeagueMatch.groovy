@@ -23,4 +23,9 @@ class LeagueMatch {
 		matchDate nullable : true
 		referee nullable : true
     }
+	
+	@Override
+	String toString() {
+		playerHome.playerName +" -Vs- "+playerAway.playerName
+	}
 }

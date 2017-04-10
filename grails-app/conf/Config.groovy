@@ -140,6 +140,8 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/dashboard/**':   ['ROLE_ADMIN','ROLE_USER'],
 	'/game/index':         ['ROLE_ADMIN','ROLE_USER'],
 	 '/leagueMatch/index':  ['ROLE_ADMIN','ROLE_USER'],
+	 '/leagueMatch/show/**':  ['ROLE_ADMIN','ROLE_USER'],
+	 '/game/show/**':  ['ROLE_ADMIN','ROLE_USER'],
 	 '/player/index':       ['ROLE_ADMIN','ROLE_USER'],
 	 '/user/index':         ['ROLE_ADMIN','ROLE_USER'],
 	'/index.gsp':       ['permitAll'],

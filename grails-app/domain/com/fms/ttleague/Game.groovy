@@ -8,4 +8,8 @@ class Game {
 	static belongsTo = [leagueMatch:LeagueMatch]
     static constraints = {
     }
+	@Override
+	String toString() {
+		"* "+playerHomePoints + "-"+playerAwayPoints
+	}
 }

@@ -40,7 +40,7 @@ class User implements Serializable {
 
 	@Override
 	String toString() {
-		username
+		fullName
 	}
 
 	Set<Role> getAuthorities() {

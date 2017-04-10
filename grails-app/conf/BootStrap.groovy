@@ -3,12 +3,13 @@ import com.fms.auth.User
 import com.fms.auth.UserRole
 import com.fms.ttleague.LeagueMatch
 import com.fms.ttleague.Player
+import com.fms.ttleague.Prediction
 
 class BootStrap {
 
     def init = { servletContext ->
 		if(!User.findByUsername("LeagueAdmin")){
-			def user =new User(username:"LeagueAdmin", password:"abc213#")
+			def user =new User(username:"LeagueAdmin", password:"fmstt124#")
 			user.save(flush:true)
 			println"------------------------------------------"
 			println user.errors
@@ -58,6 +59,19 @@ class BootStrap {
 				new UserRole(user:user, role:roleUser).save(flush:true)
 			}
 		}
+		if(Prediction.list().size()<1){
+			def mList= LeagueMatch.list()
+			User.list().each{
+				if(!it.username.equals("LeagueAdmin")){
+					mList.each{m->
+						def pd = new Prediction(leagueMatch:m,user:it)
+						pd.save(flush:true)
+						println pd.errors
+					}
+				}
+			}
+		}
+		
     }
     def destroy = {
     }

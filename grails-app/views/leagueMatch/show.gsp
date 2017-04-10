@@ -22,6 +22,23 @@
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			<ol class="property-list leagueMatch">
+			   <g:if test="${leagueMatchInstance?.playerHome}">
+				<li class="fieldcontain">
+					<span id="playerHome-label" class="property-label"><g:message code="leagueMatch.playerHome.label" default="Player Home" /></span>
+					
+						<span class="property-value" aria-labelledby="playerHome-label"><g:link controller="player" action="show" id="${leagueMatchInstance?.playerHome?.id}">${leagueMatchInstance?.playerHome?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+				
+				<g:if test="${leagueMatchInstance?.playerAway}">
+				<li class="fieldcontain">
+					<span id="playerAway-label" class="property-label"><g:message code="leagueMatch.playerAway.label" default="Player Away" /></span>
+					
+						<span class="property-value" aria-labelledby="playerAway-label"><g:link controller="player" action="show" id="${leagueMatchInstance?.playerAway?.id}">${leagueMatchInstance?.playerAway?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
 			
 				<g:if test="${leagueMatchInstance?.playerHomeSets}">
 				<li class="fieldcontain">
@@ -37,6 +54,17 @@
 					<span id="playerAwaySets-label" class="property-label"><g:message code="leagueMatch.playerAwaySets.label" default="Player Away Sets" /></span>
 					
 						<span class="property-value" aria-labelledby="playerAwaySets-label"><g:fieldValue bean="${leagueMatchInstance}" field="playerAwaySets"/></span>
+					
+				</li>
+				</g:if>
+				
+				<g:if test="${leagueMatchInstance?.games}">
+				<li class="fieldcontain">
+					<span id="games-label" class="property-label"><g:message code="leagueMatch.games.label" default="Games" /></span>
+					
+						<g:each in="${leagueMatchInstance.games}" var="g">
+						<span class="property-value" aria-labelledby="games-label"><g:link controller="game" action="show" id="${g.id}">${g?.encodeAsHTML()}</g:link></span>
+						</g:each>
 					
 				</li>
 				</g:if>
@@ -68,40 +96,11 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${leagueMatchInstance?.games}">
-				<li class="fieldcontain">
-					<span id="games-label" class="property-label"><g:message code="leagueMatch.games.label" default="Games" /></span>
-					
-						<g:each in="${leagueMatchInstance.games}" var="g">
-						<span class="property-value" aria-labelledby="games-label"><g:link controller="game" action="show" id="${g.id}">${g?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
-			
 				<g:if test="${leagueMatchInstance?.isCompleted}">
 				<li class="fieldcontain">
 					<span id="isCompleted-label" class="property-label"><g:message code="leagueMatch.isCompleted.label" default="Is Completed" /></span>
 					
 						<span class="property-value" aria-labelledby="isCompleted-label"><g:formatBoolean boolean="${leagueMatchInstance?.isCompleted}" /></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${leagueMatchInstance?.playerAway}">
-				<li class="fieldcontain">
-					<span id="playerAway-label" class="property-label"><g:message code="leagueMatch.playerAway.label" default="Player Away" /></span>
-					
-						<span class="property-value" aria-labelledby="playerAway-label"><g:link controller="player" action="show" id="${leagueMatchInstance?.playerAway?.id}">${leagueMatchInstance?.playerAway?.encodeAsHTML()}</g:link></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${leagueMatchInstance?.playerHome}">
-				<li class="fieldcontain">
-					<span id="playerHome-label" class="property-label"><g:message code="leagueMatch.playerHome.label" default="Player Home" /></span>
-					
-						<span class="property-value" aria-labelledby="playerHome-label"><g:link controller="player" action="show" id="${leagueMatchInstance?.playerHome?.id}">${leagueMatchInstance?.playerHome?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 				</g:if>

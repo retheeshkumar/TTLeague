@@ -111,9 +111,16 @@
 						<li class="controller"><g:link controller="prediction">Prediction</g:link></li>
 						<li class="controller"><g:link controller="game">Game</g:link></li>
 						<li class="controller"><g:link controller="user">User</g:link></li>
-						<li class="controller"><g:link controller="role">Role</g:link></li>
-						<li class="controller"><g:link controller="userRole">UserRole</g:link></li>
-				-</ul>
+						<sec:ifLoggedIn>
+						    <sec:ifAllGranted roles="ROLE_ADMIN">
+						      <li class="controller"><g:link controller="role">Role</g:link></li>
+						      <li class="controller"><g:link controller="userRole">UserRole</g:link></li>
+						     </sec:ifAllGranted>
+						</sec:ifLoggedIn>
+						
+						<li class="controller"><g:link controller="dashboard" action="pointsTable">Points Table</g:link></li>
+						<li class="controller"><g:link controller="dashboard" action="predictionTable">Prediction Table</g:link></li>
+				</ul>
 			</div>
 		</div>
 	</body>
