@@ -34,7 +34,7 @@
 		<g:message code="game.winner.label" default="Winner" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="winner" name="winner.id" from="${com.fms.ttleague.Player.list()}" optionKey="id" required="" value="${gameInstance?.winner?.id}" class="many-to-one"/>
+	<g:select id="winner" name="winner.id" from="${playerList}" optionKey="id" required="" value="${gameInstance?.winner?.id}" class="many-to-one"/>
 
 </div>
 

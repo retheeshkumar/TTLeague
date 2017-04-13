@@ -20,7 +20,14 @@ class GameController {
     }
 
     def create() {
-        respond new Game(params)
+		def g = new Game(params)
+		def listA =[]
+		if(g.leagueMatch){
+			listA = [new Game(params)?.leagueMatch?.playerHome, new Game(params)?.leagueMatch?.playerAway]
+		}else{
+		    listA = Player.list()
+		}
+        respond g, model:[playerList:listA ]
     }
 
     @Transactional
@@ -47,7 +54,7 @@ class GameController {
     }
 
     def edit(Game gameInstance) {
-        respond gameInstance
+        respond gameInstance, model:[playerList: [gameInstance.leagueMatch?.playerHome, gameInstance.leagueMatch?.playerAway]]
     }
 
     @Transactional

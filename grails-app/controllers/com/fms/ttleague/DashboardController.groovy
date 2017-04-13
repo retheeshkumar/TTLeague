@@ -39,11 +39,18 @@ class DashboardController {
 			}
 		}
 		def rList = []
+		def totals = ["match":0, "win":0, "loss":0, "gameDiff":0, "pDiff":0,"points":0]
 		results.each{key,v->
 			v.points = v.win*3
 			v.gameDiff = v.setWon - v.setLoss
 			v.pDiff = v.pointWon - v.pointLoss
 			rList.add(v)
+			totals.match += v.match
+			totals.win += v.win
+			totals.loss += v.loss
+			totals.gameDiff += v.gameDiff
+			totals.pDiff += v.pDiff
+			totals.points += v.points
 		}
 		rList.sort{x,y->
 			if(x.points == y.points){
@@ -52,7 +59,7 @@ class DashboardController {
 			  y.points <=> x.points
 			}
 		  }
-		[results:rList]
+		[results:rList, totals:totals]
 	}
 	
 	def predictionTable(){

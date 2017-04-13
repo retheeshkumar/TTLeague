@@ -23,12 +23,10 @@
 			<table>
 			<thead>
 					<tr>
-					<g:sortableColumn property="playerHomeSets" title="${message(code: 'leagueMatch.id.label', default: 'Match Id')}" />
-					<g:sortableColumn property="playerHomeSets" title="${message(code: 'leagueMatch.playerHome.label', default: 'Player Home')}" />
-					<g:sortableColumn property="playerHomeSets" title="${message(code: 'leagueMatch.playerAway.label', default: 'Player Away')}" />
-					<g:sortableColumn property="playerHomeSets" title="${message(code: 'leagueMatch.playerHomeSets.label', default: 'Player Home Sets')}" />
-					
-						<g:sortableColumn property="playerAwaySets" title="${message(code: 'leagueMatch.playerAwaySets.label', default: 'Player Away Sets')}" />
+					<g:sortableColumn property="id" title="${message(code: 'leagueMatch.id.label', default: 'Match Id')}" />
+					<g:sortableColumn property="playerHome" title="${message(code: 'leagueMatch.playerHome.label', default: 'Player Home')}" />
+					<g:sortableColumn property="playerAway" title="${message(code: 'leagueMatch.playerAway.label', default: 'Player Away')}" />
+					<th>Score(Home-Away)</th>
 					
 						<th><g:message code="leagueMatch.winner.label" default="Winner" /></th>
 					
@@ -38,6 +36,11 @@
 					
 						<g:sortableColumn property="isCompleted" title="${message(code: 'leagueMatch.isCompleted.label', default: 'Is Completed')}" />
 					
+					<sec:ifLoggedIn>
+						    <sec:ifAllGranted roles="ROLE_USER">
+						    	<g:sortableColumn property="isCompleted" title="Your Prediction" />
+						     </sec:ifAllGranted>
+						</sec:ifLoggedIn>
 					</tr>
 				</thead>
 				<tbody>
@@ -48,17 +51,34 @@
 					
 					<td>${fieldValue(bean: leagueMatchInstance, field: "playerHome")}</td>
 					<td>${fieldValue(bean: leagueMatchInstance, field: "playerAway")}</td>
-					<td>${fieldValue(bean: leagueMatchInstance, field: "playerHomeSets")}</td>
-						<td>${fieldValue(bean: leagueMatchInstance, field: "playerAwaySets")}</td>
+					<td>${leagueMatchInstance.playerHomeSets}-${leagueMatchInstance.playerAwaySets}
+					   ${ leagueMatchInstance.games?leagueMatchInstance.games.sort{ it.id }:'-'}
+					   <%--<g:each in="${leagueMatchInstance.games}" status="j" var="s">
+					   (${s.playerHomePoints}-${s.playerAwayPoints})
+					   </g:each> 
+					--%></td>
 					
 						<td>${fieldValue(bean: leagueMatchInstance, field: "winner")}</td>
 					
-						<td><g:formatDate date="${leagueMatchInstance.matchDate}" /></td>
+						<td><g:formatDate format="dd-MM-yyyy" date="${leagueMatchInstance.matchDate}" /></td>
 					
 						<td>${fieldValue(bean: leagueMatchInstance, field: "referee")}</td>
 					
 						<td><g:formatBoolean boolean="${leagueMatchInstance.isCompleted}" /></td>
 					
+					<sec:ifLoggedIn>
+						    <sec:ifAllGranted roles="ROLE_USER">
+						        <td>
+							        <g:if test="${false == leagueMatchInstance.isCompleted}">
+									     <g:link action="changePrediction" id="${leagueMatchInstance.id}">${pred?pred[leagueMatchInstance.id]?pred[leagueMatchInstance.id].playerName:'Predict':'Predict'}</g:link>
+									</g:if>
+									<g:else>
+									    ${pred?pred[leagueMatchInstance.id]?pred[leagueMatchInstance.id].playerName:'Not Predicted':'Not Predicted'}}
+									</g:else>
+							    	    
+						    	</td>
+						     </sec:ifAllGranted>
+						</sec:ifLoggedIn>
 					</tr>
 				</g:each>
 				</tbody>

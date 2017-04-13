@@ -69,13 +69,14 @@ class LoginController {
 		def config = SpringSecurityUtils.securityConfig
 
 		if (springSecurityService.isLoggedIn()) {
-			redirect (controller: 'workOrder' , action: 'manageWorkOrder')
+			redirect (controller: 'dashboard' , action: 'adminDashboard')
 			return
-		}
-		String view = 'auth'
-		String postUrl = "${request.contextPath}${config.apf.filterProcessesUrl}"
-		render view: view, model: [postUrl: postUrl,
+		}else{
+			String view = 'auth'
+			String postUrl = "${request.contextPath}${config.apf.filterProcessesUrl}"
+			render view: view, model: [postUrl: postUrl,
 		                           rememberMeParameter: config.rememberMe.parameter]
+	    }
 	}
         
         /**

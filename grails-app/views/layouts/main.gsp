@@ -18,12 +18,14 @@
 	</head>
 	<body>
 		<div id="grailsLogo" role="banner">
-			<a href="http://grails.org"><asset:image src="grails_logo.png" alt="Grails"/></a>
+			<a href="#"><asset:image src="grails_logo.png" alt="Grails"/></a>
+			<sec:ifLoggedIn>
 			<a	HREF="javascript:document.submitForm.submit()"  style="float:right;color:RED;">
 							<form name="submitForm" method="POST" action="${createLink(controller: 'logout')}">
 								<input type="hidden" name="" value=""><label style="float:right;color:RED;">Logout</label>
 							</form>
 					</a>
+			</sec:ifLoggedIn>
 		</div>
 		<%--
 		--%><g:layoutBody/>
