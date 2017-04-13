@@ -4,8 +4,8 @@ dataSource {
     driverClassName = "com.mysql.jdbc.Driver"
 	dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
 	username = "root"
-	password = "root"
-	//password = "password"
+	//password = "root"
+	password = "password"
 }
 hibernate {
     cache.use_second_level_cache = true

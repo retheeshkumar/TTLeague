@@ -101,4 +101,34 @@ class PredictionController {
             '*'{ render status: NOT_FOUND }
         }
     }
+	
+	@Transactional
+	def updatePrediction(Prediction predictionInstance) {
+		if (predictionInstance == null) {
+			notFound()
+			return
+		}
+
+		if (predictionInstance.hasErrors()) {
+			respond predictionInstance.errors, view:'editPrediction'
+			return
+		}
+
+		predictionInstance.save flush:true
+		flash.message = 'Your prediction updated'
+		redirect(controller:'leagueMatch',action: "index")
+	}
+	
+	def editPrediction(Prediction predictionInstance) {
+		/*def curUser = User.get(springSecurityService.getCurrentUser().id)
+		def leagurMatch = LeagueMatch.get(params.id)
+		Prediction predictionInstance = Prediction.findByUserAndLeagueMatch(curUser,leagurMatch)*/
+		if(predictionInstance)
+			respond predictionInstance,  model:[playerList: [predictionInstance.leagueMatch.playerAway, predictionInstance.leagueMatch.playerHome]]
+		else{
+			flash.message = 'No prediction entry found'
+			redirect(controller:'leagueMatch',action: "index")
+		}
+	}
+
 }

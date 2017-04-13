@@ -4,7 +4,9 @@ import com.fms.auth.User
 class DashboardController {
 
 	def dashboardService
-    def index() { }
+    def index() {
+		redirect(action: "adminDashboard")
+	}
 	def adminDashboard(){
 		
 	}
@@ -63,18 +65,29 @@ class DashboardController {
 	}
 	
 	def predictionTable(){
-		def r = Prediction.executeQuery("select p.user.id , count(p.id)  from Prediction p where p.predictedPlayer = p.leagueMatch.winner group by user  ")
+		def matchDate
+		if(params.matchDate){
+			 matchDate = params.matchDate
+		}else{
+			 matchDate = Date.parse("dd-MM-yyyy", "01-04-2017")
+		}
+		def r = Prediction.executeQuery("select p.user.id , count(p.id)  from Prediction p where p.predictedPlayer = p.leagueMatch.winner and p.leagueMatch.matchDate > :dt  group by user  ",[dt:matchDate])
 		println r
 		println"==============================="
-		def pList = [:]
+		def pList = []
+		def pMap = [:]
 		User.list().each{
 			if(!it.username.equals("LeagueAdmin")){
-				pList[it.id] =["name":it.fullName,"count":0]
+				pMap[it.id] =["name":it.fullName,"count":0]
 			}
 		}
 		r.each{
-			pList[it[0]].count=it[1]
+			pMap[it[0]].count=it[1]
 		}
-		[pList:pList]
+		pList = pMap.collect{it.value}
+		pList.sort{x,y->
+			y.count <=> x.count
+		  }
+		[pList:pList, matchDate:matchDate]
 	}
 }

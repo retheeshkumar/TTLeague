@@ -34,7 +34,7 @@
 					
 						<th><g:message code="leagueMatch.referee.label" default="Referee" /></th>
 					
-						<g:sortableColumn property="isCompleted" title="${message(code: 'leagueMatch.isCompleted.label', default: 'Is Completed')}" />
+						<g:sortableColumn property="isCompleted" title="Match Status" />
 					
 					<sec:ifLoggedIn>
 						    <sec:ifAllGranted roles="ROLE_USER">
@@ -64,16 +64,16 @@
 					
 						<td>${fieldValue(bean: leagueMatchInstance, field: "referee")}</td>
 					
-						<td><g:formatBoolean boolean="${leagueMatchInstance.isCompleted}" /></td>
+						<td>${leagueMatchInstance.isCompleted == true ? 'Completed':'Upcoming'}</td>
 					
 					<sec:ifLoggedIn>
 						    <sec:ifAllGranted roles="ROLE_USER">
 						        <td>
 							        <g:if test="${false == leagueMatchInstance.isCompleted}">
-									     <g:link action="changePrediction" id="${leagueMatchInstance.id}">${pred?pred[leagueMatchInstance.id]?pred[leagueMatchInstance.id].playerName:'Predict':'Predict'}</g:link>
+									     <g:link controller="prediction" action="editPrediction" id="${pred[leagueMatchInstance.id].id}">${pred[leagueMatchInstance.id]?pred[leagueMatchInstance.id].predictedPlayer?pred[leagueMatchInstance.id].predictedPlayer.playerName:'Predict':'Predict'}</g:link>
 									</g:if>
 									<g:else>
-									    ${pred?pred[leagueMatchInstance.id]?pred[leagueMatchInstance.id].playerName:'Not Predicted':'Not Predicted'}}
+									    ${pred[leagueMatchInstance.id]?pred[leagueMatchInstance.id].predictedPlayer?pred[leagueMatchInstance.id].predictedPlayer.playerName:'Not Predicted':'Not Predicted'}
 									</g:else>
 							    	    
 						    	</td>

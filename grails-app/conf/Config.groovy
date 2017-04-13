@@ -129,7 +129,7 @@ grails.plugin.springsecurity.requestMap.className = 'com.fms.auth.Requestmap'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/':                ['permitAll'],
 	'/index':           ['permitAll','ROLE_ADMIN'],
-	'**/prediction/**':  ['ROLE_ADMIN'],
+	'/prediction/**':  ['ROLE_ADMIN'],
 	'/rest/**':         ['permitAll'],
 	'/game/**':         ['ROLE_ADMIN'],
 	'/leagueMatch/**':  ['ROLE_ADMIN'],
@@ -141,6 +141,8 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/game/index':         ['ROLE_ADMIN','ROLE_USER','ROLE_GUEST'],
 	 '/leagueMatch/index':  ['ROLE_ADMIN','ROLE_USER','ROLE_GUEST'],
 	 '/leagueMatch/show/**':  ['ROLE_ADMIN','ROLE_USER','ROLE_GUEST'],
+	 '/prediction/editPrediction/**':  ['ROLE_ADMIN','ROLE_USER'],
+	 '/prediction/updatePrediction/**':  ['ROLE_ADMIN','ROLE_USER'],
 	 '/game/show/**':  ['ROLE_ADMIN','ROLE_USER','ROLE_GUEST'],
 	 '/player/index':       ['ROLE_ADMIN','ROLE_USER','ROLE_GUEST'],
 	 '/user/index':         ['ROLE_ADMIN','ROLE_USER','ROLE_GUEST'],

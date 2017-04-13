@@ -25,7 +25,7 @@ class LeagueMatchController {
 				}
 			}
 			l.each{
-				pred[it.leagueMatch.id] = it.predictedPlayer
+				pred[it.leagueMatch.id] = it
 			}
 		}
         respond listLm, model:[leagueMatchInstanceCount: LeagueMatch.count(),pred:pred]
@@ -118,11 +118,16 @@ class LeagueMatchController {
         }
     }
 	
-	def editPrediction() {
-		def curUser = User.get(springSecurityService.getCurrentUser().id)
+	def editPrediction(Prediction predictionInstance) {
+		/*def curUser = User.get(springSecurityService.getCurrentUser().id)
 		def leagurMatch = LeagueMatch.get(params.id)
-		Prediction predictionInstance = Prediction.findByUserAndLeagueMatch(curUser,leagurMatch)
-		respond predictionInstance
+		Prediction predictionInstance = Prediction.findByUserAndLeagueMatch(curUser,leagurMatch)*/
+		if(predictionInstance)
+			respond predictionInstance,  model:[playerList: [predictionInstance.leagueMatch.playerAway, predictionInstance.leagueMatch.playerHome]]
+		else{
+			flash.message = 'No prediction entry found'
+			redirect(action: "index")
+		}
 	}
 
 	@Transactional
