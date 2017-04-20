@@ -15,7 +15,7 @@
 package grails.plugin.springsecurity
 
 import javax.servlet.http.HttpServletResponse
-
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.access.annotation.Secured
 
 @Secured('permitAll')
@@ -35,6 +35,8 @@ class LogoutController {
 		}
 		println "======Logout======"+request.post
 		session?.invalidate()
+		//SecurityContextHolder.getContext()?.getAuthentication()?.setAuthenticated(false);
+		//SecurityContextHolder.clearContext()
 		// TODO put any pre-logout code here
 		//redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl // '/j_spring_security_logout'
 		redirect (controller: 'login' , action: 'index')

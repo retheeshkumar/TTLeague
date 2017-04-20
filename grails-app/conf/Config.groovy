@@ -124,6 +124,7 @@ grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.fms.auth.User
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.fms.auth.UserRole'
 grails.plugin.springsecurity.authority.className = 'com.fms.auth.Role'
 grails.plugin.springsecurity.requestMap.className = 'com.fms.auth.Requestmap'
+grails.plugin.springsecurity.logout.handlerNames = ['rememberMeServices','securityContextLogoutHandler']
 //grails.plugin.springsecurity.securityConfigType = 'Requestmap'
 //grails.plugin.springsecurity.securityConfigType = 'staticRules'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
@@ -154,6 +155,9 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/**/favicon.ico':  ['permitAll']
 ]
 
+grails.plugin.springsecurity.filterChain.chainMap = [
+	'/**': 'JOINED_FILTERS,-rememberMeAuthenticationFilter'
+]
 /*grails.plugin.springsecurity.useSecurityEventListener = true
  grails.plugin.springsecurity.onInteractiveAuthenticationSuccessEvent = { e, appCtx ->
 		 println "========================================================Interactivelast========"

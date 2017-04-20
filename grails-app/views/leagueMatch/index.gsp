@@ -20,6 +20,12 @@
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
+			 <g:form>
+			 <div style="float:right">
+                  <g:select id="selectedPlayer" name="selectedPlayerId" from="${pList}" optionKey="id" optionValue="playerName" value="${selectedPlayerId}" class="many-to-one"/>
+                  <span class="simple"><g:actionSubmit class="editar" action="index" value="FilterByPlayer" /></span>
+              </div>
+              </g:form>
 			<table>
 			<thead>
 					<tr>
@@ -64,11 +70,11 @@
 					
 						<td>${fieldValue(bean: leagueMatchInstance, field: "referee")}</td>
 					
-						<td>${leagueMatchInstance.isCompleted == true ? 'Completed':'Upcoming'}</td>
+						<td style="color:${leagueMatchInstance.isCompleted == true ?' #da3c1a':' #1a34c8'}">${leagueMatchInstance.isCompleted == true ? 'Completed':'Upcoming'}</td>
 					
 					<sec:ifLoggedIn>
 						    <sec:ifAllGranted roles="ROLE_USER">
-						        <td>
+						        <td style="color: ${leagueMatchInstance?.winner != null && pred[leagueMatchInstance.id]?.predictedPlayer?.id == leagueMatchInstance?.winner?.id?'BLUE':'RED'}">
 							        <g:if test="${false == leagueMatchInstance.isCompleted}">
 									     <g:link controller="prediction" action="editPrediction" id="${pred[leagueMatchInstance.id].id}">${pred[leagueMatchInstance.id]?pred[leagueMatchInstance.id].predictedPlayer?pred[leagueMatchInstance.id].predictedPlayer.playerName:'Predict':'Predict'}</g:link>
 									</g:if>

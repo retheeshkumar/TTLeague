@@ -65,15 +65,20 @@ class DashboardController {
 	}
 	
 	def predictionTable(){
-		def matchDate
-		if(params.matchDate){
-			 matchDate = params.matchDate
+		def matchDate = Date.parse("dd-MM-yyyy", "01-04-2017")
+		def condition = '>'
+		if(params.filterSelected.toString() == "2"){
+			 matchDate = Date.parse("dd-MM-yyyy", "01-05-2017")
+			 condition = '<'
+		}else if(params.filterSelected.toString() == "3"){
+			 matchDate = Date.parse("dd-MM-yyyy", "01-05-2017")
+		}else if(params.filterSelected.toString() == "4"){
+			 matchDate = new Date().clearTime()
 		}else{
-			 matchDate = Date.parse("dd-MM-yyyy", "01-04-2017")
+		    params.filterSelected=1
 		}
-		def r = Prediction.executeQuery("select p.user.id , count(p.id)  from Prediction p where p.predictedPlayer = p.leagueMatch.winner and p.leagueMatch.matchDate > :dt  group by user  ",[dt:matchDate])
+		def r = Prediction.executeQuery("select p.user.id , count(p.id)  from Prediction p where p.predictedPlayer = p.leagueMatch.winner and p.leagueMatch.matchDate "+condition+" :dt  group by user  ",[dt:matchDate])
 		println r
-		println"==============================="
 		def pList = []
 		def pMap = [:]
 		User.list().each{
@@ -88,6 +93,6 @@ class DashboardController {
 		pList.sort{x,y->
 			y.count <=> x.count
 		  }
-		[pList:pList, matchDate:matchDate]
+		[pList:pList, matchDate:matchDate, filterSelected:params.filterSelected,optList:[[id:1,name:'All'],[id:2,name:'FirstHalf'], [id:3,name:'SecondHalf'], [id:4,name:'Daily']]]
 	}
 }

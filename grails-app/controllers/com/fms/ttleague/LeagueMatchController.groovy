@@ -12,8 +12,28 @@ class LeagueMatchController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 13, 100)
-		def listLm = LeagueMatch.list(params)
+		def listLm
+		def lCount = 0
+		if(params.selectedPlayerId && params.selectedPlayerId.toString().trim() != '' &&  params.selectedPlayerId.toString().trim() != '0'){
+			params.max = 26
+			Player
+			listLm = LeagueMatch.createCriteria().list(params){
+				or{
+					playerHome{
+						eq('id', params.selectedPlayerId as long)
+					}
+					playerAway{
+						eq('id',params.selectedPlayerId as long)
+					}
+				}
+			}
+			lCount = listLm.size()
+		}else{
+			params.max = Math.min(max ?: 13, 100)
+			listLm = LeagueMatch.list(params)
+			lCount = LeagueMatch.count()
+		}
+       
 		def curUser = User.get(springSecurityService.getCurrentUser().id)
 		def roleNames = springSecurityService.getPrincipal().getAuthorities()*.authority
 		def pred=[:]
@@ -28,7 +48,9 @@ class LeagueMatchController {
 				pred[it.leagueMatch.id] = it
 			}
 		}
-        respond listLm, model:[leagueMatchInstanceCount: LeagueMatch.count(),pred:pred]
+		def pList = [ ["id":0,'playerName':"All"]]
+		pList += Player.list()
+        respond listLm, model:[leagueMatchInstanceCount: lCount,pred:pred,selectedPlayerId:params.selectedPlayerId,pList:pList]
     }
 
     def show(LeagueMatch leagueMatchInstance) {
