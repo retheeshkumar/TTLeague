@@ -1,5 +1,7 @@
 package com.fms.ttleague
 import com.fms.auth.User
+import com.fms.auth.UserRole
+import com.fms.auth.Role
 
 class DashboardController {
 
@@ -56,7 +58,12 @@ class DashboardController {
 		}
 		rList.sort{x,y->
 			if(x.points == y.points){
-			  y.gameDiff <=> x.gameDiff
+				if(x.gameDiff == y.gameDiff){
+				   y.pDiff <=> x.pDiff
+				}else{
+					y.gameDiff <=> x.gameDiff
+				}
+			  
 			}else{
 			  y.points <=> x.points
 			}
@@ -74,6 +81,7 @@ class DashboardController {
 			 matchDate = Date.parse("dd-MM-yyyy", "01-05-2017")
 		}else if(params.filterSelected.toString() == "4"){
 			 matchDate = new Date().clearTime()
+			 condition = '='
 		}else{
 		    params.filterSelected=1
 		}
@@ -81,8 +89,10 @@ class DashboardController {
 		println r
 		def pList = []
 		def pMap = [:]
+		def role = Role.findByAuthority("ROLE_USER")
 		User.list().each{
-			if(!it.username.equals("LeagueAdmin")){
+			def a = UserRole.findByUserAndRole(it,role)
+			if(a){
 				pMap[it.id] =["name":it.fullName,"count":0]
 			}
 		}
@@ -93,6 +103,7 @@ class DashboardController {
 		pList.sort{x,y->
 			y.count <=> x.count
 		  }
-		[pList:pList, matchDate:matchDate, filterSelected:params.filterSelected,optList:[[id:1,name:'All'],[id:2,name:'FirstHalf'], [id:3,name:'SecondHalf'], [id:4,name:'Daily']]]
+		def total =  LeagueMatch.executeQuery("Select count(*) from LeagueMatch l where l.isCompleted=:b and l.matchDate "+condition+" :dt  ",[dt:matchDate,b:true])
+		[pList:pList,total:total[0], matchDate:matchDate, filterSelected:params.filterSelected,optList:[[id:1,name:'All'],[id:2,name:'FirstHalf'], [id:3,name:'SecondHalf'], [id:4,name:'Daily']]]
 	}
 }
